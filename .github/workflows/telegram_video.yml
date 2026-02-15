@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   schedule:
     # KST(한국시간) 기준: 매 2시간마다(00,02,04,...). GitHub cron은 UTC 기준이라 변환한 값
-    - cron: '0 15-23/2,1-13/2 * * *'
+    - cron: '*/5 * * * *'
 
 jobs:
   post:
