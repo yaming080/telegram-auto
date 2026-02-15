@@ -3,9 +3,9 @@ name: Telegram Auto Video Post
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/5 * * * *'   # 테스트: 5분마다(UTC 기준이지만 매 5분은 동일)
+    # KST(한국시간) 기준: 매 2시간마다(00,02,04,...). GitHub cron은 UTC 기준이라 변환한 값
+    - cron: '0 15-23/2,1-13/2 * * *'
 
- workflow_dispatch:
 jobs:
   post:
     runs-on: ubuntu-latest
