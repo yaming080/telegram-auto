@@ -1,40 +1,22 @@
 name: Telegram Auto Video Post
 
 on:
-  schedule:
-    - cron: "0 * * * *"   # 매 정각
   workflow_dispatch:
+  schedule:
+    - cron: "0 * * * *"   # 매시간 00분 (UTC 기준)
 
 jobs:
   post:
     runs-on: ubuntu-latest
     steps:
-      - name: Sanity check token (getMe)
-        env:
-          TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-        run: |
-          set -e
-          echo "Checking bot token..."
-          curl -sS "https://api.telegram.org/bot${TOKEN}/getMe"
-          echo ""
-
-      - name: Send video by file_id (and print Telegram response)
+      - name: Send video by file_id
         env:
           TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          VIDEO_ID: ${{ secrets.TELEGRAM_VIDEO_FILE_ID }}
+          VIDEO_FILE_ID: ${{ secrets.TELEGRAM_VIDEO_FILE_ID }}
+          CAPTION: ${{ secrets.TELEGRAM_CAPTION }}
         run: |
-          set -e
-          echo "Sending video..."
-          resp=$(curl -sS -X POST "https://api.telegram.org/bot${TOKEN}/sendVideo" \
-            --data "chat_id=${CHAT_ID}" \
-            --data "video=${VIDEO_ID}" \
-            --data-urlencode "caption=공지 확인 부탁드립니다.")
-          echo "Telegram response:"
-          echo "$resp"
-          echo "$resp" | python - <<'PY'
-import sys, json
-d=json.load(sys.stdin)
-assert d.get("ok") is True, d
-print("OK ✅")
-PY
+          curl -sS -X POST "https://api.telegram.org/bot${TOKEN}/sendVideo" \
+            -d "chat_id=${CHAT_ID}" \
+            -d "video=${VIDEO_FILE_ID}" \
+            --data-urlencode "caption=${CAPTION}"
