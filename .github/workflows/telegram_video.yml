@@ -3,7 +3,8 @@ name: Telegram Auto Video Post
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/5 * * * *'   # 매2시간마
+    - cron: '*/5 * * * *'   # 테스트: 5분마다(UTC 기준이지만 매 5분은 동일)
+
  workflow_dispatch:
 jobs:
   post:
