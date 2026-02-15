@@ -3,7 +3,7 @@ name: Telegram Auto Video Post
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 15-23/2,1-13/2 * * *" * * * *   # 매2시간마
+    - cron: '*/5 * * * *'   # 매2시간마
  workflow_dispatch:
 jobs:
   post:
