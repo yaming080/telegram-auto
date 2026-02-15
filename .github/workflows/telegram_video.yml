@@ -1,0 +1,22 @@
+
+name: Telegram Auto Video Post
+
+on:
+  schedule:
+    - cron: "0 * * * *"   # 매 정각(매시간 00분)
+  workflow_dispatch:
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send video by file_id
+        env:
+          TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          VIDEO_ID: ${{ secrets.TELEGRAM_VIDEO_FILE_ID }}
+        run: |
+          curl -sS -X POST "https://api.telegram.org/bot${TOKEN}/sendVideo" \
+            --data "chat_id=${CHAT_ID}" \
+            --data "video=${VIDEO_ID}" \
+            --data-urlencode "caption=공지 확인 부탁드립니다."
